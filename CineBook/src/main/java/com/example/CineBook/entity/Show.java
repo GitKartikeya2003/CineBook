@@ -42,7 +42,7 @@ public class Show {
     @Version
     private int version;
 
-    public void reserved(int seats) {
+    public void reserve(int seats) {
 
         if (seats <= 0 || seats > availableSeats) {
 
@@ -68,6 +68,4 @@ public class Show {
         this.ticketPrice = ticketPrice;
         this.availableSeats = totalSeats;
     }
-
-
 }
