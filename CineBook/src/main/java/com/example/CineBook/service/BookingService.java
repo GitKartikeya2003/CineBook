@@ -12,6 +12,7 @@ import com.example.CineBook.repository.BookingRepository;
 import com.example.CineBook.repository.CustomerRepository;
 import com.example.CineBook.repository.ShowRepository;
 import com.example.CineBook.repository.ShowSeatRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -35,6 +36,7 @@ public class BookingService {
         this.customerRepository = customerRepository;
     }
 
+    @Transactional
     public BookingResponse booking(Long showId, CreateBookingRequest request) {
 
         Show show = showRepository.findById(showId).orElseThrow(
