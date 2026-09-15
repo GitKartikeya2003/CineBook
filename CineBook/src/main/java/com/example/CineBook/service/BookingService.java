@@ -3,9 +3,7 @@ package com.example.CineBook.service;
 
 import com.example.CineBook.dtos.BookingResponse;
 import com.example.CineBook.dtos.CreateBookingRequest;
-import com.example.CineBook.entity.Booking;
-import com.example.CineBook.entity.Show;
-import com.example.CineBook.entity.ShowSeat;
+import com.example.CineBook.entity.*;
 import com.example.CineBook.exception.ResourceNotFoundException;
 import com.example.CineBook.exception.SeatUnavailableException;
 import com.example.CineBook.repository.BookingRepository;
@@ -72,6 +70,52 @@ public class BookingService {
         Booking booking = bookingRepository.save(new Booking(show, customer, totalPrice, labels));
 
         return BookingResponse.from(booking);
+    }
+
+    public BookingResponse find(Long bookingId) {
+
+        Booking booking = bookingRepository.findById(bookingId).orElseThrow(
+                () -> new ResourceNotFoundException("No Booking found with this id "));
+
+        // Booking booking = bookingRepository.findById(bookingId).orElseThrow(ResourceNotFoundException::new);    //Method Reference
+
+        return BookingResponse.from(booking);
+    }
+
+    @Transactional
+    public List<BookingResponse> findByProfileId(Long profileId) {
+
+        Customer customer = customerRepository.findById(profileId).orElseThrow(
+                () -> new ResourceNotFoundException("Profile not found")
+        );
+
+        return bookingRepository.findByCustomerIdOrderByBookedAtDesc(profileId)
+                .stream()
+                .map(BookingResponse::from)
+                .toList();
+
+
+    }
+
+    @Transactional
+    public BookingResponse cancel(Long bookingId, Long profileId) {
+
+
+        Booking booking = bookingRepository.findByIdAndCustomerId(bookingId, profileId).orElseThrow(
+                () -> new ResourceNotFoundException("Booking not found with this id ")
+        );
+
+        if (booking.getStatus() == BookingStatus.CONFIRMED) {
+
+            List<ShowSeat> seats = showSeatRepository.findForUpdate(booking.getShow().getId(), booking.getSeatLabels());
+            seats.forEach(ShowSeat::release);
+
+            booking.getShow().release(booking.getSeatLabels().size());
+            booking.cancel();
+        }
+
+        return BookingResponse.from(booking);
+
     }
 
 
