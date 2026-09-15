@@ -4,7 +4,6 @@ package com.example.CineBook.service;
 import com.example.CineBook.dtos.MovieResponse;
 import com.example.CineBook.dtos.ShowResponse;
 import com.example.CineBook.dtos.TheatreResponse;
-import com.example.CineBook.entity.Movie;
 import com.example.CineBook.repository.*;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +18,6 @@ public class CatalogService {
     private final ShowRepository showRepository;
 
     private final ShowSeatRepository showSeatRepository;
-    private final BookingRepository bookingRepository;
-    private final CustomerRepository customerRepository;
     private final MovieRepository movieRepository;
     private final TheatreRepository theatreRepository;
 
@@ -28,8 +25,6 @@ public class CatalogService {
     public CatalogService(ShowRepository showRepository, ShowSeatRepository showSeatRepository, BookingRepository bookingRepository, CustomerRepository customerRepository, MovieRepository movieRepository, TheatreRepository theatreRepository) {
         this.showRepository = showRepository;
         this.showSeatRepository = showSeatRepository;
-        this.bookingRepository = bookingRepository;
-        this.customerRepository = customerRepository;
         this.movieRepository = movieRepository;
         this.theatreRepository = theatreRepository;
     }
