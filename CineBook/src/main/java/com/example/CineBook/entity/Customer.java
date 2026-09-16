@@ -31,5 +31,9 @@ public class Customer {
     @Column(nullable = false, length = 200)
     private String phone;
 
-
+    public Customer(String name, String email, String phone) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+    }
 }
