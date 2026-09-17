@@ -16,13 +16,12 @@ public class CatalogService {
 
 
     private final ShowRepository showRepository;
-
     private final ShowSeatRepository showSeatRepository;
     private final MovieRepository movieRepository;
     private final TheatreRepository theatreRepository;
 
 
-    public CatalogService(ShowRepository showRepository, ShowSeatRepository showSeatRepository, BookingRepository bookingRepository, CustomerRepository customerRepository, MovieRepository movieRepository, TheatreRepository theatreRepository) {
+    public CatalogService(ShowRepository showRepository, ShowSeatRepository showSeatRepository, MovieRepository movieRepository, TheatreRepository theatreRepository) {
         this.showRepository = showRepository;
         this.showSeatRepository = showSeatRepository;
         this.movieRepository = movieRepository;
@@ -36,7 +35,7 @@ public class CatalogService {
 
     public List<TheatreResponse> theatres(String city) {
 
-        return theatreRepository.findByCityIgnoreCaseOrderByTitle(city).stream().map(TheatreResponse::from).toList();
+        return theatreRepository.findByCityIgnoreCaseOrderByName(city).stream().map(TheatreResponse::from).toList();
     }
 
     public List<ShowResponse> shows(String city, LocalDate date) {
